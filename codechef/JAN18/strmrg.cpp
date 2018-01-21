@@ -16,22 +16,19 @@ int calc(string s){
 }
 
 
-int memoization(vector<vector<int>> &memo, string a, string b, int i, int j){
-    if(i==-1 || j==-1)
-        return 0;
-    if(memo[i][j]!=-1)
-        return memo[i][j];
-    if(a[i]==b[j]){
-        memo[i][j] = 1+memoization(memo,a,b,i-1,j-1);
-        // cout<<i<<' '<<j<<'\t'<<memo[i][j]<<'\n';
-        return memo[i][j];
+int memoization(vector<vector<int>> &memo, string a, string b){
+    int m=a.length(), n = b.length();
+    for(int i = 0;i <= m; i++){
+        for(int j = 0; j <= n; j++){
+            if(i==0 || j == 0)
+                memo[i][j]=0;
+            else if(a[i-1] == b[j-1])
+                memo[i][j] = memo[i-1][j-1] + 1;
+            else
+                memo[i][j] = max(memo[i-1][j],memo[i][j-1]);
+        }
     }
-    else{
-        memo[i][j] = max(memoization(memo,a,b,i-1,j),memoization(memo,a,b,i,j-1));
-        // cout<<i<<' '<<j<<'\t'<<memo[i][j]<<'\n';
-        return memo[i][j];
-    }
-    return -1;
+    return memo[m][n];
 }
 
 int max(std::vector<std::vector<int> > v){
@@ -44,8 +41,6 @@ int max(std::vector<std::vector<int> > v){
 }
 
 int main(void){
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
     int t,n,m;
     cin>>t;
     while(t--){
@@ -73,8 +68,8 @@ int main(void){
         }
         n=a.size();
         m=b.size();
-        vector<vector<int>> memo(n,vector<int> (m,-1));
-        memoization(memo,a,b,n-1,m-1);
+        vector<vector<int>> memo(n+1,vector<int> (m+1,-1));
+        memoization(memo,a,b);
         int k = max(memo);
         cout<<ca+cb-k<<'\n';
     }
