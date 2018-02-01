@@ -10,10 +10,10 @@ private:
 public:
     int count(std::vector<int> L, std::vector<int> R){
         int maxR = *max_element(R.begin(), R.end());
-        std::vector<std::vector<long long>> dp(2,std::vector<long long> (1000000, 0));
+        std::vector<std::vector<long long>> dp(2,std::vector<long long> (maxR, 0));
         for(int i = L[0]; i <= R[0]; ++i)
             dp[0][i] = 1;
-        int i;
+        int i = 0;
         for(int I = 1; I < L.size(); ++I){
             i = I%2;
             fill(dp[i].begin(), dp[i].end(), 0);
